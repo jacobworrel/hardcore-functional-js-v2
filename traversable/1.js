@@ -1,6 +1,7 @@
 const fs = require('fs')
 const Task = require('data.task')
-const Either = require('../either')
+const types = require('../types')
+const { Either } = types;
 const {Right, Left, fromNullable} = Either
 const { List, Map } = require('immutable-ext')
 
@@ -11,6 +12,6 @@ const looksLikeEmail = x =>
   x.match(/@/ig) ? Right(x) : Left('not an email')
 
 const email = "blahh@yadda.com"
-const res = [greaterThan5, looksLikeEmail].map(v => v(email))
-console.log(res)
+const res = List([greaterThan5, looksLikeEmail]).traverse(Either.of, v => v(email))
 
+res.fold(console.log, x => console.log(x.toJS()));

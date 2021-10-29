@@ -8,3 +8,7 @@ const httpGet = (path, params) =>
 const getUser = x => httpGet('/user', {id: x})
 const getTimeline = x => httpGet(`/timeline/${x}`, {})
 const getAds = () => httpGet('/ads', {})
+
+List([getUser, getTimeline, getAds])
+  .traverse(Task.of, f => f())
+  .fork(console.log, x => console.log(x.toJS()))
